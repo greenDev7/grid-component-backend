@@ -4,10 +4,12 @@ import
 { Body, 
   Controller, 
   Get, 
+  HttpCode, 
   HttpException, 
   HttpStatus, 
   Post 
 } from '@nestjs/common';
+import { PagingDocumentDto } from './dto/paging-document.dto';
 
 @Controller('documents')
 export class DocumentsController {
@@ -29,5 +31,11 @@ export class DocumentsController {
       .catch((error) => {
         throw new HttpException('Произошла какая-то ошибка при создании документа =(: ' + error, HttpStatus.INTERNAL_SERVER_ERROR);
       })
+  }
+
+  @Post('/findPaginated')
+  @HttpCode(HttpStatus.OK)
+  findPaginated(@Body() pagingDocumentDto: PagingDocumentDto) {
+    return this.documentService.findPaginated(pagingDocumentDto);
   }
 }
